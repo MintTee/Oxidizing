@@ -1,0 +1,15 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "GNU General Public License version 3"
+
+[[mods]]
+modId = "oxidizing_test"
+version = "1.0.0"
+displayName = "Oxidizing GameTests"
+
+[[dependencies.oxidizing_test]]
+modId = "oxidizing"
+type = "required"
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"

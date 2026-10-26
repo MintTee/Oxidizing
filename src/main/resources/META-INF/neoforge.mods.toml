@@ -1,0 +1,25 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "GNU General Public License version 3"
+issueTrackerURL = "https://github.com/MintTee/Oxidizing/issues"
+
+[[mods]]
+modId = "oxidizing"
+version = "${version}"
+displayName = "Oxidizing"
+description = "Copper touching water oxidizes faster"
+authors = "yafuce"
+displayURL = "https://modrinth.com/mod/oxidizing"
+logoFile = "assets/oxidizing/icon.png"
+# Server-side only: clients without the mod can join, and the mod doesn't care what the server runs
+displayTest = "IGNORE_ALL_VERSION"
+
+[[mixins]]
+config = "oxidizing.mixins.json"
+
+[[dependencies.oxidizing]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft}"
+ordering = "NONE"
+side = "BOTH"

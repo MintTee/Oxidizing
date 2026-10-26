@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      # Every node caches its own Minecraft (plus the Forge/NeoForge decompiles): the runner's ~14 GB of free disk isn't enough
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h /
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@v4
+
+      # A cache saved by a run without the ASM pin (settings.gradle.kts) can hold Minecraft jars with no classes,
+      # which Loom reuses instead of rebuilding: drop them so this run regenerates them
+      - name: Drop broken cached Minecraft jars
+        run: |
+          cd ~/.gradle/caches/fabric-loom 2>/dev/null || exit 0
+          for jar in */minecraft-merged.jar minecraftMaven/net/minecraft/minecraft-merged-deobf/*/*.jar; do
+            [ -f "$jar" ] || continue
+            unzip -l "$jar" | grep -q 'net/minecraft/server/MinecraftServer.class' && continue
+            v=$(basename "$(dirname "$jar")")
+            echo "Removing broken cached Minecraft $v ($jar)"
+            rm -rf "$v" minecraftMaven/net/minecraft/*/"$v"
+          done
+
+      # A tag that doesn't match mod.version would upload a stale version
+      - name: Check tag matches mod.version
+        run: |
+          version=$(sed -n 's/^mod\.version = "\(.*\)"/\1/p' stonecutter.properties.toml)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match mod.version $version"
+            exit 1
+          fi
+
+      # Separate step: a failing node stops the job before anything is uploaded
+      - run: ./gradlew runGameTest
+
+      - name: Disk and memory (on failure)
+        if: failure()
+        run: |
+          df -h /
+          free -m
+          du -sh ~/.gradle ~/.gradle/caches/* 2>/dev/null | sort -h | tail -8
+
+      - run: ./gradlew buildAndCollect modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: build/libs/*/*.jar
+          body_path: CHANGELOG.md

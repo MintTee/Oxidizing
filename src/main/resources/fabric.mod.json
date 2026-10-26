@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "oxidizing",
+  "version": "${version}",
+  "name": "Oxidizing",
+  "description": "Copper touching water oxidizes faster",
+  "authors": ["yafuce"],
+  "contact": {
+    "discord": "yafuce.",
+    "mail": "martin.bost@proton.me",
+    "homepage": "https://modrinth.com/mod/oxidizing",
+    "sources": "https://github.com/MintTee/Oxidizing",
+    "issues": "https://github.com/MintTee/Oxidizing/issues"
+  },
+  "license": "GNU General Public License version 3",
+  "icon": "assets/oxidizing/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["oxidizing.Main"]
+  },
+  "mixins": [
+    "oxidizing.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${minecraft}",
+    "fabricloader": ">=${loader}",
+    "java": ">=${java}"
+  }
+}

@@ -1,0 +1,24 @@
+# Gradle
+.gradle/
+build/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+run/
+out/
+run-gametest/
+
+# OS
+.DS_Store
+# VSCode
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Image editor files
+*.kra
+*~
