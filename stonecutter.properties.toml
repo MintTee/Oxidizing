@@ -1,7 +1,7 @@
 mod.id = "oxidizing"
 mod.name = "Oxidizing"
 mod.group = "me.yafuce"
-mod.version = "1.0.0"
+mod.version = "1.0.1"
 # Overridden by the NeoForge node tables
 mod.loader = "fabric"
 
