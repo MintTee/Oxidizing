@@ -12,7 +12,7 @@
     "sources": "https://github.com/MintTee/Oxidizing",
     "issues": "https://github.com/MintTee/Oxidizing/issues"
   },
-  "license": "GNU General Public License version 3",
+  "license": "All Rights Reserved",
   "icon": "assets/oxidizing/icon.png",
   "environment": "*",
   "entrypoints": {

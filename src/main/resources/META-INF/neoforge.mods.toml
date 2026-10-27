@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[1,)"
-license = "GNU General Public License version 3"
+license = "All Rights Reserved"
 issueTrackerURL = "https://github.com/MintTee/Oxidizing/issues"
 
 [[mods]]
